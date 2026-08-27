@@ -49,6 +49,7 @@ function aman($text) {
 	</aside>
 	<main id="home">
 		<div class="hero"><div><div class="label">Web Developer / Surabaya</div><h1>Levyan <i>Terry</i></h1><p class="lead">Content creator yang berbagi cerita, lifestyle, dan berbagai momen menarik dengan cara yang autentik.</p><div class="buttons"><a class="button main" href="#karya">Lihat Sosial Media &darr;</a><a class="button" href="#kontak">Mari ngobrol &rarr;</a></div></div><div class="visual"><img src="asset/terry.jpg" alt="Foto Terry"><strong>✳</strong></div></div>
+		<div class="robot-greeting"><div class="robot-scene"><div class="robot-antenna"></div><div class="robot"><div class="robot-face"><span></span><span></span><i></i></div><div class="robot-body"><b></b><b></b></div></div></div><div class="robot-message"><span class="label">WELCOME / 01</span><h2>Halo, <i>teman.</i></h2><p id="robot-text">Selamat datang di ruang kecil Levyan. Senang kamu mampir.</p><button class="button main" id="robot-greet" type="button">Sapa robot</button></div></div>
 		<section id="karya"><div class="heading"><div><div class="label">01 / Portfolio</div><h2>Sosial <i>Media</i></h2></div><p class="muted"></p></div><div class="projects">
 			<?php foreach ($projects as $number => $project): ?><?php $judul = $project['title'] === 'INTSAGRAM' ? 'INSTAGRAM' : $project['title']; $gambar = !empty($project['image_url']) ? $project['image_url'] : ($project['title'] === 'TIKTOK' ? 'asset/vyan.jpg' : ($project['title'] === 'INTSAGRAM' ? 'asset/ig.jpg' : ($project['title'] === 'GITHUB' ? 'asset/github.jpg' : ''))); $deskripsi = $project['title'] === 'TIKTOK' ? "✨ Just sharing my little world\n📩 Business: DM\n📸 Instagram: ryyvyan" : $project['description']; $link = $project['title'] === 'TIKTOK' ? 'https://www.tiktok.com/@vyanterry' : ($project['title'] === 'INTSAGRAM' ? 'https://www.instagram.com/ryyvyan' : ($project['title'] === 'GITHUB' ? 'https://github.com/vyanterry' : $project['project_url'])); $labelLink = $project['title'] === 'INTSAGRAM' ? 'Buka Instagram' : ($project['title'] === 'GITHUB' ? 'Buka GitHub' : 'Buka TikTok'); ?><article class="project"><div class="project-number"><?php if ($gambar): ?><img src="<?= aman($gambar) ?>" alt="Gambar <?= aman($judul) ?>"><?php else: ?>0<?= $number + 1 ?><?php endif; ?></div><h3><?= aman($judul) ?></h3><p><?= nl2br(aman($deskripsi)) ?></p><div class="tech"><?= aman($project['tech_stack']) ?></div><?php if ($link !== '#'): ?><a class="project-link" href="<?= aman($link) ?>" target="_blank" rel="noopener noreferrer"><?= $labelLink ?> &rarr;</a><?php endif; ?></article><?php endforeach; ?>
 		</div></section>
@@ -57,15 +58,36 @@ function aman($text) {
 Melalui konten, saya senang membagikan cerita, pengalaman, dan berbagai momen dengan cara yang sederhana, autentik, dan relevan. Bagi saya, setiap karya adalah kesempatan untuk menciptakan sesuatu yang bukan hanya menarik untuk dilihat, tetapi juga meninggalkan kesan.
 
 Saya terus belajar, bereksplorasi, dan berkembang untuk menciptakan karya yang memiliki karakter dan makna.</p></div></div></section>
-		<section id="kontak"><div class="two-col"><div><div class="label">03 / Hubungi saya</div><h2>Mari <i>ngobrol.</i></h2><p class="muted">Mohon Diisi Yaa, Nanti Saya Baca</p></div><div><?php if ($notice): ?><div class="notice"><?= aman($notice) ?></div><?php endif; ?><form method="post"><div><label for="name">NAMA</label><input id="name" name="name" required></div><div><label for="email">EMAIL</label><input id="email" name="email" type="email" required></div><div><label for="message">PESAN</label><textarea id="message" name="message" required></textarea></div><button class="button main" type="submit">Kirim pesan &rarr;</button></form></div></div></section>
+		<section id="kontak"><div class="two-col"><div><div class="label">04 / Hubungi saya</div><h2>Mari <i>ngobrol.</i></h2><p class="muted">Mohon Diisi Yaa, Nanti Saya Baca</p></div><div><?php if ($notice): ?><div class="notice"><?= aman($notice) ?></div><?php endif; ?><form method="post"><div><label for="name">NAMA</label><input id="name" name="name" required></div><div><label for="email">EMAIL</label><input id="email" name="email" type="email" required></div><div><label for="message">PESAN</label><textarea id="message" name="message" required></textarea></div><button class="button main" type="submit">Kirim pesan &rarr;</button></form></div></div></section>
 	</main>
-	<footer><span>ryyvyan &copy; 2026</span><span>Dibuat dengan rasa ingin tahu</span></footer>
+	<footer><div class="footer-brand"><a class="logo" href="#home">Levyan Terry<b>.</b></a><p>Content, lifestyle, dan cerita kecil yang autentik.</p></div><div class="footer-links"><a href="https://www.instagram.com/ryyvyan" target="_blank" rel="noopener noreferrer">Instagram</a><a href="https://www.tiktok.com/@vyanterry" target="_blank" rel="noopener noreferrer">TikTok</a><a href="https://github.com/vyanterry" target="_blank" rel="noopener noreferrer">GitHub</a></div><a class="back-top" href="#home" aria-label="Kembali ke atas">&#8593;</a></footer>
 </div>
 <script>
 	const navigation = document.querySelector('nav');
 	const updateNavigation = () => navigation.classList.toggle('scrolled', window.scrollY > 24);
 	window.addEventListener('scroll', updateNavigation, { passive: true });
 	updateNavigation();
+	const robotText = document.querySelector('#robot-text');
+	const robotGreet = document.querySelector('#robot-greet');
+	const visitorName = localStorage.getItem('portfolio-visitor-name');
+	if (visitorName) robotText.textContent = `Selamat datang kembali, ${visitorName}. Senang kamu mampir.`;
+	robotGreet.addEventListener('click', () => {
+		const name = window.prompt('Siapa nama kamu?');
+		if (!name || !name.trim()) return;
+		const cleanName = name.trim().slice(0, 40);
+		localStorage.setItem('portfolio-visitor-name', cleanName);
+		robotText.textContent = `Halo, ${cleanName}! Terima kasih sudah berkunjung.`;
+		robotGreet.textContent = 'Disimpan';
+	});
+	const revealItems = document.querySelectorAll('section, .robot-greeting, .project, footer');
+	const revealObserver = new IntersectionObserver((entries, observer) => {
+		entries.forEach((entry) => {
+			if (!entry.isIntersecting) return;
+			entry.target.classList.add('reveal', 'visible');
+			observer.unobserve(entry.target);
+		});
+	}, { threshold: 0.12 });
+	revealItems.forEach((item) => revealObserver.observe(item));
 	const audio = document.querySelector('#site-audio');
 	const toggle = document.querySelector('.music-toggle');
 	const mute = document.querySelector('.music-mute');

@@ -18,20 +18,43 @@
 	</aside>
 	<main id="home">
 		<div class="hero"><div><div class="label">Content Creator / Surabaya</div><h1>Levyan <i>Terry</i></h1><p class="lead">Content creator yang berbagi cerita, lifestyle, dan berbagai momen menarik dengan cara yang autentik.</p><div class="buttons"><a class="button main" href="#karya">Lihat Sosial Media</a><a class="button" href="#kontak">Mari ngobrol</a></div></div><div class="visual"><img src="asset/terry.jpg" alt="Foto Levyan Terry"><strong></strong></div></div>
-		<section id="karya"><div class="heading"><div><div class="label">01 / Portfolio</div><h2>Sosial <i>Media</i></h2></div><p class="muted">Temukan saya di berbagai platform.</p></div><div class="projects">
+		<div class="robot-greeting"><div class="robot-scene"><div class="robot-antenna"></div><div class="robot"><div class="robot-face"><span></span><span></span><i></i></div><div class="robot-body"><b></b><b></b></div></div></div><div class="robot-message"><span class="label">WELCOME / 01</span><h2>Oii, <i>Derr</i></h2><p id="robot-text">Selamat datang di ruang kecil Levyan. Senang kamu mampir.</p><button class="button main" id="robot-greet" type="button">Sapa robot</button></div></div>
+		<section id="karya"><div class="heading"><div><div class="label">02 / Portfolio</div><h2>Sosial <i>Media</i></h2></div><p class="muted">Temukan saya di berbagai platform.</p></div><div class="projects">
 			<a class="project project-clickable" href="https://www.tiktok.com/@vyanterry" target="_blank" rel="noopener noreferrer"><div class="project-number"><img src="asset/vyan.jpg" alt="Profil TikTok Levyan Terry"></div><h3>TIKTOK</h3><p>✨ Just sharing my little world<br>📩 Business: DM<br>📸 Instagram: ryyvyan</p><div class="tech">Content &amp; Lifestyle</div><span class="project-link">Buka TikTok &rarr;</span></a>
 			<a class="project project-clickable" href="https://www.instagram.com/ryyvyan" target="_blank" rel="noopener noreferrer"><div class="project-number"><img src="asset/ig.jpg" alt="Profil Instagram Levyan Terry"></div><h3>INSTAGRAM</h3><p>✨ Just sharing my little world<br>📩 Business: DM<br>📸 TikTok: @vyanterry</p><div class="tech">Content &amp; Lifestyle</div><span class="project-link">Buka Instagram &rarr;</span></a>
 			<a class="project project-clickable" href="https://github.com/vyanterry" target="_blank" rel="noopener noreferrer"><div class="project-number"><img src="asset/github.jpg" alt="Profil GitHub Levyan Terry"></div><h3>GITHUB</h3><p>Tempat saya berbagi project, eksperimen, dan karya digital.</p><div class="tech">Code &amp; Projects</div><span class="project-link">Buka GitHub &rarr;</span></a>
 		</div></section>
-		<section id="tentang"><div class="two-col"><div><div class="label">02 / Tentang saya</div><h2>Lebih Dari Sekedar <i>Membuat Konten</i></h2></div><div><p class="about-text">Saya percaya bahwa karya yang baik bukan hanya tentang apa yang terlihat, tetapi juga tentang cerita dan nilai yang ada di baliknya.<br><br>Melalui konten, saya senang membagikan cerita, pengalaman, dan berbagai momen dengan cara yang sederhana, autentik, dan relevan.</p></div></div></section>
-		<section id="kontak"><div class="two-col"><div><div class="label">03 / Hubungi saya</div><h2>Mari <i>ngobrol.</i></h2><p class="muted">Punya ide atau ingin berkolaborasi? Hubungi saya melalui media sosial.</p></div><div class="buttons"><a class="button main" href="https://www.instagram.com/ryyvyan" target="_blank" rel="noopener noreferrer">Instagram</a><a class="button" href="https://www.tiktok.com/@vyanterry" target="_blank" rel="noopener noreferrer">TikTok</a></div></div></section>
+		<section id="tentang"><div class="two-col"><div><div class="label">03 / Tentang saya</div><h2>Lebih Dari Sekedar <i>Membuat Konten</i></h2></div><div><p class="about-text">Saya percaya bahwa karya yang baik bukan hanya tentang apa yang terlihat, tetapi juga tentang cerita dan nilai yang ada di baliknya.<br><br>Melalui konten, saya senang membagikan cerita, pengalaman, dan berbagai momen dengan cara yang sederhana, autentik, dan relevan.</p></div></div></section>
+		<section id="kontak"><div class="two-col"><div><div class="label">04 / Hubungi saya</div><h2>Mari <i>ngobrol.</i></h2><p class="muted">Punya ide atau ingin berkolaborasi? Hubungi saya melalui media sosial.</p></div><div class="buttons"><a class="button main" href="https://www.instagram.com/ryyvyan" target="_blank" rel="noopener noreferrer">Instagram</a><a class="button" href="https://www.tiktok.com/@vyanterry" target="_blank" rel="noopener noreferrer">TikTok</a></div></div></section>
 	</main>
+	<footer><div class="footer-brand"><a class="logo" href="#home">Levyan Terry<b>.</b></a><p>Content, lifestyle, dan cerita kecil yang autentik.</p></div><div class="footer-links"><a href="https://www.instagram.com/ryyvyan" target="_blank" rel="noopener noreferrer">Instagram</a><a href="https://www.tiktok.com/@vyanterry" target="_blank" rel="noopener noreferrer">TikTok</a><a href="https://github.com/vyanterry" target="_blank" rel="noopener noreferrer">GitHub</a></div><a class="back-top" href="#home" aria-label="Kembali ke atas">&#8593;</a></footer>
 </div>
 <script>
 	const navigation = document.querySelector('nav');
 	const updateNavigation = () => navigation.classList.toggle('scrolled', window.scrollY > 24);
 	window.addEventListener('scroll', updateNavigation, { passive: true });
 	updateNavigation();
+	const robotText = document.querySelector('#robot-text');
+	const robotGreet = document.querySelector('#robot-greet');
+	const visitorName = localStorage.getItem('portfolio-visitor-name');
+	if (visitorName) robotText.textContent = `Selamat datang kembali, ${visitorName}. Senang kamu mampir.`;
+	robotGreet.addEventListener('click', () => {
+		const name = window.prompt('Siapa nama kamu?');
+		if (!name || !name.trim()) return;
+		const cleanName = name.trim().slice(0, 40);
+		localStorage.setItem('portfolio-visitor-name', cleanName);
+		robotText.textContent = `Halo, ${cleanName}! Terima kasih sudah berkunjung.`;
+		robotGreet.textContent = 'Disimpan';
+	});
+	const revealItems = document.querySelectorAll('section, .robot-greeting, .project, footer');
+	const revealObserver = new IntersectionObserver((entries, observer) => {
+		entries.forEach((entry) => {
+			if (!entry.isIntersecting) return;
+			entry.target.classList.add('reveal', 'visible');
+			observer.unobserve(entry.target);
+		});
+	}, { threshold: 0.12 });
+	revealItems.forEach((item) => revealObserver.observe(item));
 	const audio = document.querySelector('#site-audio');
 	const toggle = document.querySelector('.music-toggle');
 	const mute = document.querySelector('.music-mute');

@@ -44,7 +44,7 @@ function aman($text) {
 		<div class="music-copy"><span class="music-status">NOW PLAYING</span><strong>Playlist Levyan</strong></div>
 		<button class="music-toggle" type="button" aria-label="Putar musik" aria-pressed="false">Play</button>
 		<button class="music-mute" type="button" aria-label="Matikan suara" aria-pressed="false">Mute</button>
-		<label class="volume-control" for="volume-php">Volume<input id="volume-php" type="range" min="0" max="1" step="0.05" value="0.35"></label>
+		<label class="volume-control" for="volume-php">Volume <output id="volume-value-php">35%</output><input id="volume-php" type="range" min="0" max="1" step="0.05" value="0.35"></label>
 		<audio id="site-audio" autoplay loop preload="auto"><source src="asset/lagu.mp3" type="audio/mpeg">Browser kamu tidak mendukung audio.</audio>
 	</aside>
 	<main id="home">
@@ -70,7 +70,9 @@ Saya terus belajar, bereksplorasi, dan berkembang untuk menciptakan karya yang m
 	const toggle = document.querySelector('.music-toggle');
 	const mute = document.querySelector('.music-mute');
 	const volume = document.querySelector('.volume-control input');
+	const volumeValue = document.querySelector('#volume-value-php');
 	audio.volume = volume.value;
+	volumeValue.value = `${Math.round(volume.value * 100)}%`;
 	audio.play().then(() => {
 		toggle.textContent = 'Pause';
 		toggle.setAttribute('aria-pressed', 'true');
@@ -88,7 +90,16 @@ Saya terus belajar, bereksplorasi, dan berkembang untuk menciptakan karya yang m
 			toggle.setAttribute('aria-pressed', 'false');
 		}
 	});
-	volume.addEventListener('input', () => { audio.volume = volume.value; });
+	volume.addEventListener('input', () => {
+		audio.volume = volume.value;
+		volumeValue.value = `${Math.round(volume.value * 100)}%`;
+		if (Number(volume.value) > 0 && audio.muted) {
+			audio.muted = false;
+			mute.textContent = 'Mute';
+			mute.setAttribute('aria-label', 'Matikan suara');
+			mute.setAttribute('aria-pressed', 'false');
+		}
+	});
 	mute.addEventListener('click', () => {
 		audio.muted = !audio.muted;
 		mute.textContent = audio.muted ? 'Unmute' : 'Mute';

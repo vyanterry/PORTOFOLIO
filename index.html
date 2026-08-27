@@ -29,6 +29,10 @@
 	<footer><span>ryyvyan &copy; 2026</span><span>Dibuat dengan rasa ingin tahu</span></footer>
 </div>
 <script>
+	const navigation = document.querySelector('nav');
+	const updateNavigation = () => navigation.classList.toggle('scrolled', window.scrollY > 24);
+	window.addEventListener('scroll', updateNavigation, { passive: true });
+	updateNavigation();
 	const audio = document.querySelector('#site-audio');
 	const toggle = document.querySelector('.music-toggle');
 	const mute = document.querySelector('.music-mute');

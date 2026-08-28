@@ -39,17 +39,22 @@ function aman($text) {
 </head>
 <body>
 <div class="container">
-	<nav><a class="logo" href="#home">Levyan Terry<b>.</b></a><ul><li><a href="#karya">Karya</a></li><li><a href="#tentang">Tentang</a></li><li><a href="#kontak">Kontak</a></li></ul></nav>
-	<aside class="music-player" aria-label="Pemutar musik">
+	<nav><a class="logo" href="#home">Levyan Terry<b>.</b></a><ul><li><a href="#playlist">Playlist</a></li><li><a href="#karya">Karya</a></li><li><a href="#tentang">Tentang</a></li><li><a href="#kontak">Kontak</a></li></ul></nav>
+	<aside class="music-player" aria-label="Pemutar musik" hidden>
 		<div class="music-copy"><span class="music-status">NOW PLAYING</span><strong>Playlist Levyan</strong></div>
-		<button class="music-toggle" type="button" aria-label="Putar musik" aria-pressed="false">Play</button>
-		<button class="music-mute" type="button" aria-label="Matikan suara" aria-pressed="false">Mute</button>
+		<button class="music-toggle" type="button" aria-label="Putar musik" aria-pressed="false" hidden>Play</button>
+		<button class="music-mute" type="button" aria-label="Matikan suara" aria-pressed="false" hidden>Mute</button>
 		<label class="volume-control" for="volume-php">Volume <output id="volume-value-php">35%</output><input id="volume-php" type="range" min="0" max="1" step="0.05" value="0.35"></label>
-		<audio id="site-audio" autoplay loop preload="auto"><source src="asset/lagu.mp3" type="audio/mpeg">Browser kamu tidak mendukung audio.</audio>
+		<audio id="site-audio" loop preload="auto"><source src="asset/lagu.mp3" type="audio/mpeg">Browser kamu tidak mendukung audio.</audio>
 	</aside>
 	<main id="home">
 		<div class="hero"><div><div class="label">Web Developer / Surabaya</div><h1>Levyan <i>Terry</i></h1><p class="lead">Content creator yang berbagi cerita, lifestyle, dan berbagai momen menarik dengan cara yang autentik.</p><div class="buttons"><a class="button main" href="#karya">Lihat Sosial Media &darr;</a><a class="button" href="#kontak">Mari ngobrol &rarr;</a></div></div><div class="visual"><img src="asset/terry.jpg" alt="Foto Terry"><strong>✳</strong></div></div>
 		<div class="robot-greeting"><div class="robot-scene"><div class="robot-antenna"></div><div class="robot"><div class="robot-face"><span></span><span></span><i></i></div><div class="robot-body"><b></b><b></b></div></div></div><div class="robot-message"><span class="label">WELCOME / 01</span><h2>Halo, <i>teman.</i></h2><p id="robot-text">Selamat datang di ruang kecil Levyan. Senang kamu mampir.</p><button class="button main" id="robot-greet" type="button">Sapa robot</button></div></div>
+		<section id="playlist"><div class="heading"><div><div class="label">02 / Playlist</div><h2>Lagu <i>Favorit</i></h2></div><p class="muted">Tiga lagu yang sedang menemani cerita kecil saya.</p></div><div class="playlist-grid">
+			<button class="playlist-card" type="button" data-audio="asset/wonderwall.mp3"><div class="playlist-cover"><img src="asset/wonderwall.jpg" alt="Cover playlist Wonderwall oleh Oasis"><span>01</span></div><div class="playlist-info"><span class="playlist-type">OASIS</span><h3>Wonderwall</h3><p>Oasis</p><span class="playlist-action">Putar lagu &rarr;</span></div></button>
+			<button class="playlist-card" type="button" data-audio="asset/perunggu lagu.mp3"><div class="playlist-cover"><img src="asset/perunggu.jpeg" alt="Cover playlist Ini Abadi oleh Perunggu"><span>02</span></div><div class="playlist-info"><span class="playlist-type">PERUNGGU</span><h3>Ini Abadi</h3><p>Perunggu</p><span class="playlist-action">Putar lagu &rarr;</span></div></button>
+			<button class="playlist-card" type="button" data-audio="asset/lagu.mp3"><div class="playlist-cover"><img src="asset/dan bandung.jpg" alt="Cover playlist Dan Bandung oleh The Panasdalam Bank"><span>03</span></div><div class="playlist-info"><span class="playlist-type">THE PANASDALAM BANK</span><h3>Dan Bandung</h3><p>The Panasdalam Bank</p><span class="playlist-action">Putar lagu &rarr;</span></div></button>
+		</div></section>
 		<section id="karya"><div class="heading"><div><div class="label">01 / Portfolio</div><h2>Sosial <i>Media</i></h2></div><p class="muted"></p></div><div class="projects">
 			<?php foreach ($projects as $number => $project): ?><?php $judul = $project['title'] === 'INTSAGRAM' ? 'INSTAGRAM' : $project['title']; $gambar = !empty($project['image_url']) ? $project['image_url'] : ($project['title'] === 'TIKTOK' ? 'asset/vyan.jpg' : ($project['title'] === 'INTSAGRAM' ? 'asset/ig.jpg' : ($project['title'] === 'GITHUB' ? 'asset/github.jpg' : ''))); $deskripsi = $project['title'] === 'TIKTOK' ? "✨ Just sharing my little world\n📩 Business: DM\n📸 Instagram: ryyvyan" : $project['description']; $link = $project['title'] === 'TIKTOK' ? 'https://www.tiktok.com/@vyanterry' : ($project['title'] === 'INTSAGRAM' ? 'https://www.instagram.com/ryyvyan' : ($project['title'] === 'GITHUB' ? 'https://github.com/vyanterry' : $project['project_url'])); $labelLink = $project['title'] === 'INTSAGRAM' ? 'Buka Instagram' : ($project['title'] === 'GITHUB' ? 'Buka GitHub' : 'Buka TikTok'); ?><article class="project"><div class="project-number"><?php if ($gambar): ?><img src="<?= aman($gambar) ?>" alt="Gambar <?= aman($judul) ?>"><?php else: ?>0<?= $number + 1 ?><?php endif; ?></div><h3><?= aman($judul) ?></h3><p><?= nl2br(aman($deskripsi)) ?></p><div class="tech"><?= aman($project['tech_stack']) ?></div><?php if ($link !== '#'): ?><a class="project-link" href="<?= aman($link) ?>" target="_blank" rel="noopener noreferrer"><?= $labelLink ?> &rarr;</a><?php endif; ?></article><?php endforeach; ?>
 		</div></section>
@@ -89,16 +94,27 @@ Saya terus belajar, bereksplorasi, dan berkembang untuk menciptakan karya yang m
 	}, { threshold: 0.12 });
 	revealItems.forEach((item) => revealObserver.observe(item));
 	const audio = document.querySelector('#site-audio');
+	const musicPlayer = document.querySelector('.music-player');
 	const toggle = document.querySelector('.music-toggle');
 	const mute = document.querySelector('.music-mute');
+	const playlistCards = document.querySelectorAll('.playlist-card');
 	const volume = document.querySelector('.volume-control input');
 	const volumeValue = document.querySelector('#volume-value-php');
 	audio.volume = volume.value;
 	volumeValue.value = `${Math.round(volume.value * 100)}%`;
-	audio.play().then(() => {
+	playlistCards.forEach((card) => card.addEventListener('click', async () => {
+		musicPlayer.hidden = false;
+		toggle.hidden = false;
+		mute.hidden = false;
+		if (audio.getAttribute('src') !== card.dataset.audio) {
+			audio.src = card.dataset.audio;
+			audio.load();
+		}
+		try { await audio.play(); } catch (error) { toggle.textContent = 'Tambah lagu'; return; }
 		toggle.textContent = 'Pause';
+		toggle.setAttribute('aria-label', 'Jeda musik');
 		toggle.setAttribute('aria-pressed', 'true');
-	}).catch(() => { toggle.textContent = 'Play'; });
+	}));
 	toggle.addEventListener('click', async () => {
 		if (audio.paused) {
 			try { await audio.play(); } catch (error) { toggle.textContent = 'Tambah lagu'; return; }

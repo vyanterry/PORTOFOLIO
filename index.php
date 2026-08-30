@@ -80,40 +80,26 @@ Saya terus belajar, bereksplorasi, dan berkembang untuk menciptakan karya yang m
 	window.addEventListener('scroll', updateNavigation, { passive: true });
 	updateNavigation();
 	const visitorCount = document.querySelector('#visitor-count');
-	const BIN_ID = 'levyan-portfolio-visits';
-	const API_ENDPOINT = `https://jsonbin.io/v3/b/${BIN_ID}/latest`;
-	const fetchVisitorCount = async () => {
+	const initCounter = () => {
 		try {
-			console.log('[Visitor Counter] Fetching from JSONBin');
-			const response = await fetch(API_ENDPOINT, {
-				method: 'GET',
-				headers: {
-					'Accept': 'application/json'
-				},
-				cache: 'no-store'
-			});
-			if (!response.ok) throw new Error(`HTTP ${response.status}`);
-			const data = await response.json();
-			let count = (data.record && data.record.count) || 0;
-			count++;
-			const updateResponse = await fetch(`https://jsonbin.io/v3/b/${BIN_ID}`, {
-				method: 'PUT',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify({ count })
-			});
-			if (!updateResponse.ok) throw new Error('Failed to update count');
-			const displayValue = Number(count).toLocaleString('id-ID');
-			visitorCount.textContent = displayValue;
-			console.log('[Visitor Counter] Updated to:', displayValue);
-		} catch (error) {
-			console.error('[Visitor Counter] Error:', error.message);
+			let visits = parseInt(localStorage.getItem('portfolio-visits') || '0');
+			visits++;
+			localStorage.setItem('portfolio-visits', String(visits));
+			const formatted = visits.toLocaleString('id-ID');
+			visitorCount.textContent = formatted;
+			console.log('[Counter] Updated to:', formatted);
+		} catch (e) {
+			console.error('[Counter]', e.message);
 			visitorCount.textContent = '—';
 		}
 	};
-	fetchVisitorCount();
-	console.log('[Visitor Counter] Script loaded');
+	window.addEventListener('load', initCounter);
+	if (document.readyState === 'loading') {
+		document.addEventListener('DOMContentLoaded', initCounter);
+	} else {
+		initCounter();
+	}
+	console.log('[Counter] Ready');
 	const robotText = document.querySelector('#robot-text');
 	const robotGreet = document.querySelector('#robot-greet');
 	const visitorName = localStorage.getItem('portfolio-visitor-name');

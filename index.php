@@ -40,6 +40,13 @@ function aman($text) {
 <body>
 <div class="container">
 	<nav><a class="logo" href="#home" aria-label="Beranda RYYVYAN"><img src="asset/logo.jpg" alt="RYYVYAN"></a><ul><li><a href="#playlist">Playlist</a></li><li><a href="#karya">Karya</a></li><li><a href="#tentang">Tentang</a></li><li><a href="#kontak">Kontak</a></li></ul></nav>
+	<div class="visitor-counter" aria-live="polite">
+		<span class="visitor-icon" aria-hidden="true">●</span>
+		<div class="visitor-copy">
+			<span class="visitor-label">Pengunjung</span>
+			<strong id="visitor-count">0</strong>
+		</div>
+	</div>
 	<aside class="music-player" aria-label="Pemutar musik" hidden>
 		<div class="music-copy"><span class="music-status">NOW PLAYING</span><strong>Playlist Levyan</strong></div>
 		<button class="music-toggle" type="button" aria-label="Putar musik" aria-pressed="false" hidden>Play</button>
@@ -72,6 +79,25 @@ Saya terus belajar, bereksplorasi, dan berkembang untuk menciptakan karya yang m
 	const updateNavigation = () => navigation.classList.toggle('scrolled', window.scrollY > 24);
 	window.addEventListener('scroll', updateNavigation, { passive: true });
 	updateNavigation();
+	const visitorCount = document.querySelector('#visitor-count');
+	visitorCount.classList.add('is-loading');
+	const fetchVisitorCount = async () => {
+		try {
+			const response = await fetch('https://api.countapi.xyz/hit/levyan-terry-portfolio/visits', { cache: 'no-store' });
+			if (!response.ok) throw new Error('Failed to fetch visitor count');
+			const data = await response.json();
+			if (data && typeof data.value === 'number') {
+				visitorCount.textContent = Number(data.value).toLocaleString('id-ID');
+			} else {
+				visitorCount.textContent = '—';
+			}
+		} catch (error) {
+			visitorCount.textContent = '—';
+		} finally {
+			visitorCount.classList.remove('is-loading');
+		}
+	};
+	fetchVisitorCount();
 	const robotText = document.querySelector('#robot-text');
 	const robotGreet = document.querySelector('#robot-greet');
 	const visitorName = localStorage.getItem('portfolio-visitor-name');

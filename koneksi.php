@@ -28,6 +28,20 @@ $koneksi->query("CREATE TABLE IF NOT EXISTS messages (
 	message TEXT NOT NULL,
 	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 )");
+$koneksi->query("CREATE TABLE IF NOT EXISTS site_visits (
+	id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+	page VARCHAR(255) NOT NULL DEFAULT '/',
+	ip_address VARCHAR(45) NOT NULL,
+	user_agent VARCHAR(255) NOT NULL,
+	referrer VARCHAR(255) DEFAULT '',
+	visited_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)");
+$koneksi->query("CREATE VIEW IF NOT EXISTS v_portfolio_visit_summary AS
+	SELECT DATE(visited_at) AS tanggal,
+		COUNT(*) AS total_kunjungan,
+		COUNT(DISTINCT ip_address) AS unik_pengunjung
+	FROM site_visits
+	GROUP BY DATE(visited_at)");
 
 $projectCount = $koneksi->query('SELECT COUNT(*) AS total FROM projects');
 if ($projectCount && (int) $projectCount->fetch_assoc()['total'] === 0) {

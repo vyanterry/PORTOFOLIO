@@ -80,20 +80,33 @@ Saya terus belajar, bereksplorasi, dan berkembang untuk menciptakan karya yang m
 	window.addEventListener('scroll', updateNavigation, { passive: true });
 	updateNavigation();
 	const visitorCount = document.querySelector('#visitor-count');
-	const STORAGE_KEY = 'portfolio-visitor-count';
-	const initVisitorCounter = () => {
+	const API_ENDPOINT = '/api/visits';
+	const fetchVisitorCount = async () => {
 		try {
-			let count = parseInt(localStorage.getItem(STORAGE_KEY)) || 0;
-			count++;
-			localStorage.setItem(STORAGE_KEY, count.toString());
-			visitorCount.textContent = count.toLocaleString('id-ID');
-			console.log('[Visitor Counter] Updated to:', count);
+			console.log('[Visitor Counter] Fetching from:', API_ENDPOINT);
+			const response = await fetch(API_ENDPOINT, {
+				method: 'GET',
+				cache: 'no-store'
+			});
+			console.log('[Visitor Counter] Response status:', response.status);
+			if (!response.ok) {
+				throw new Error(`HTTP ${response.status}`);
+			}
+			const data = await response.json();
+			console.log('[Visitor Counter] Data received:', data);
+			if (data && typeof data.count === 'number') {
+				const displayValue = Number(data.count).toLocaleString('id-ID');
+				visitorCount.textContent = displayValue;
+				console.log('[Visitor Counter] Updated to:', displayValue);
+			} else {
+				throw new Error('Invalid data format');
+			}
 		} catch (error) {
 			console.error('[Visitor Counter] Error:', error.message);
 			visitorCount.textContent = '—';
 		}
 	};
-	initVisitorCounter();
+	fetchVisitorCount();
 	console.log('[Visitor Counter] Script loaded successfully');
 	const robotText = document.querySelector('#robot-text');
 	const robotGreet = document.querySelector('#robot-greet');

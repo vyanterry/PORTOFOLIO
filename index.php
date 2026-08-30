@@ -81,23 +81,39 @@ Saya terus belajar, bereksplorasi, dan berkembang untuk menciptakan karya yang m
 	updateNavigation();
 	const visitorCount = document.querySelector('#visitor-count');
 	visitorCount.classList.add('is-loading');
+	const API_ENDPOINT = 'https://api.countapi.xyz/hit/levyan-terry-portfolio/visits';
 	const fetchVisitorCount = async () => {
 		try {
-			const response = await fetch('https://api.countapi.xyz/hit/levyan-terry-portfolio/visits', { cache: 'no-store' });
-			if (!response.ok) throw new Error('Failed to fetch visitor count');
+			console.log('[Visitor Counter] Fetching from:', API_ENDPOINT);
+			const response = await fetch(API_ENDPOINT, {
+				method: 'GET',
+				cache: 'no-store',
+				headers: {
+					'Accept': 'application/json'
+				}
+			});
+			console.log('[Visitor Counter] Response status:', response.status);
+			if (!response.ok) {
+				throw new Error(`HTTP ${response.status}`);
+			}
 			const data = await response.json();
+			console.log('[Visitor Counter] Data received:', data);
 			if (data && typeof data.value === 'number') {
-				visitorCount.textContent = Number(data.value).toLocaleString('id-ID');
+				const displayValue = Number(data.value).toLocaleString('id-ID');
+				visitorCount.textContent = displayValue;
+				console.log('[Visitor Counter] Updated to:', displayValue);
 			} else {
-				visitorCount.textContent = '—';
+				throw new Error('Invalid data format');
 			}
 		} catch (error) {
+			console.error('[Visitor Counter] Error:', error.message);
 			visitorCount.textContent = '—';
 		} finally {
 			visitorCount.classList.remove('is-loading');
 		}
 	};
 	fetchVisitorCount();
+	console.log('[Visitor Counter] Script loaded successfully');
 	const robotText = document.querySelector('#robot-text');
 	const robotGreet = document.querySelector('#robot-greet');
 	const visitorName = localStorage.getItem('portfolio-visitor-name');

@@ -47,34 +47,40 @@
 	window.addEventListener('scroll', updateNavigation, { passive: true });
 	updateNavigation();
 	const visitorCount = document.querySelector('#visitor-count');
-	const API_ENDPOINT = '/api/visits';
+	const BIN_ID = 'levyan-portfolio-visits';
+	const API_ENDPOINT = `https://jsonbin.io/v3/b/${BIN_ID}/latest`;
 	const fetchVisitorCount = async () => {
 		try {
-			console.log('[Visitor Counter] Fetching from:', API_ENDPOINT);
+			console.log('[Visitor Counter] Fetching from JSONBin');
 			const response = await fetch(API_ENDPOINT, {
 				method: 'GET',
+				headers: {
+					'Accept': 'application/json'
+				},
 				cache: 'no-store'
 			});
-			console.log('[Visitor Counter] Response status:', response.status);
-			if (!response.ok) {
-				throw new Error(`HTTP ${response.status}`);
-			}
+			if (!response.ok) throw new Error(`HTTP ${response.status}`);
 			const data = await response.json();
-			console.log('[Visitor Counter] Data received:', data);
-			if (data && typeof data.count === 'number') {
-				const displayValue = Number(data.count).toLocaleString('id-ID');
-				visitorCount.textContent = displayValue;
-				console.log('[Visitor Counter] Updated to:', displayValue);
-			} else {
-				throw new Error('Invalid data format');
-			}
+			let count = (data.record && data.record.count) || 0;
+			count++;
+			const updateResponse = await fetch(`https://jsonbin.io/v3/b/${BIN_ID}`, {
+				method: 'PUT',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({ count })
+			});
+			if (!updateResponse.ok) throw new Error('Failed to update count');
+			const displayValue = Number(count).toLocaleString('id-ID');
+			visitorCount.textContent = displayValue;
+			console.log('[Visitor Counter] Updated to:', displayValue);
 		} catch (error) {
 			console.error('[Visitor Counter] Error:', error.message);
 			visitorCount.textContent = '—';
 		}
 	};
 	fetchVisitorCount();
-	console.log('[Visitor Counter] Script loaded successfully');
+	console.log('[Visitor Counter] Script loaded');
 	const robotText = document.querySelector('#robot-text');
 	const robotGreet = document.querySelector('#robot-greet');
 	const visitorName = localStorage.getItem('portfolio-visitor-name');

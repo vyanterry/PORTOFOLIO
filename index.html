@@ -47,39 +47,20 @@
 	window.addEventListener('scroll', updateNavigation, { passive: true });
 	updateNavigation();
 	const visitorCount = document.querySelector('#visitor-count');
-	visitorCount.classList.add('is-loading');
-	const API_ENDPOINT = 'https://api.countapi.xyz/hit/levyan-terry-portfolio/visits';
-	const fetchVisitorCount = async () => {
+	const STORAGE_KEY = 'portfolio-visitor-count';
+	const initVisitorCounter = () => {
 		try {
-			console.log('[Visitor Counter] Fetching from:', API_ENDPOINT);
-			const response = await fetch(API_ENDPOINT, {
-				method: 'GET',
-				cache: 'no-store',
-				headers: {
-					'Accept': 'application/json'
-				}
-			});
-			console.log('[Visitor Counter] Response status:', response.status);
-			if (!response.ok) {
-				throw new Error(`HTTP ${response.status}`);
-			}
-			const data = await response.json();
-			console.log('[Visitor Counter] Data received:', data);
-			if (data && typeof data.value === 'number') {
-				const displayValue = Number(data.value).toLocaleString('id-ID');
-				visitorCount.textContent = displayValue;
-				console.log('[Visitor Counter] Updated to:', displayValue);
-			} else {
-				throw new Error('Invalid data format');
-			}
+			let count = parseInt(localStorage.getItem(STORAGE_KEY)) || 0;
+			count++;
+			localStorage.setItem(STORAGE_KEY, count.toString());
+			visitorCount.textContent = count.toLocaleString('id-ID');
+			console.log('[Visitor Counter] Updated to:', count);
 		} catch (error) {
 			console.error('[Visitor Counter] Error:', error.message);
 			visitorCount.textContent = '—';
-		} finally {
-			visitorCount.classList.remove('is-loading');
 		}
 	};
-	fetchVisitorCount();
+	initVisitorCounter();
 	console.log('[Visitor Counter] Script loaded successfully');
 	const robotText = document.querySelector('#robot-text');
 	const robotGreet = document.querySelector('#robot-greet');

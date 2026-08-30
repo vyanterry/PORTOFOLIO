@@ -40,13 +40,7 @@ function aman($text) {
 <body>
 <div class="container">
 	<nav><a class="logo" href="#home" aria-label="Beranda RYYVYAN"><img src="asset/logo.jpg" alt="RYYVYAN"></a><ul><li><a href="#playlist">Playlist</a></li><li><a href="#karya">Karya</a></li><li><a href="#tentang">Tentang</a></li><li><a href="#kontak">Kontak</a></li></ul></nav>
-	<div class="visitor-counter" aria-live="polite">
-		<span class="visitor-icon" aria-hidden="true">●</span>
-		<div class="visitor-copy">
-			<span class="visitor-label">Pengunjung</span>
-			<strong id="visitor-count">0</strong>
-		</div>
-	</div>
+
 	<aside class="music-player" aria-label="Pemutar musik" hidden>
 		<div class="music-copy"><span class="music-status">NOW PLAYING</span><strong>Playlist Levyan</strong></div>
 		<button class="music-toggle" type="button" aria-label="Putar musik" aria-pressed="false" hidden>Play</button>
@@ -79,27 +73,6 @@ Saya terus belajar, bereksplorasi, dan berkembang untuk menciptakan karya yang m
 	const updateNavigation = () => navigation.classList.toggle('scrolled', window.scrollY > 24);
 	window.addEventListener('scroll', updateNavigation, { passive: true });
 	updateNavigation();
-	const visitorCount = document.querySelector('#visitor-count');
-	const initCounter = () => {
-		try {
-			let visits = parseInt(localStorage.getItem('portfolio-visits') || '0');
-			visits++;
-			localStorage.setItem('portfolio-visits', String(visits));
-			const formatted = visits.toLocaleString('id-ID');
-			visitorCount.textContent = formatted;
-			console.log('[Counter] Updated to:', formatted);
-		} catch (e) {
-			console.error('[Counter]', e.message);
-			visitorCount.textContent = '—';
-		}
-	};
-	window.addEventListener('load', initCounter);
-	if (document.readyState === 'loading') {
-		document.addEventListener('DOMContentLoaded', initCounter);
-	} else {
-		initCounter();
-	}
-	console.log('[Counter] Ready');
 	const robotText = document.querySelector('#robot-text');
 	const robotGreet = document.querySelector('#robot-greet');
 	const visitorName = localStorage.getItem('portfolio-visitor-name');

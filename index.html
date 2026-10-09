@@ -26,8 +26,8 @@
 			<button class="playlist-card" type="button" data-audio="asset/lagu.mp3"><div class="playlist-cover"><img src="asset/dan bandung.jpg" alt="Cover playlist Dan Bandung oleh The Panasdalam Bank"><span>03</span></div><div class="playlist-info"><span class="playlist-type">THE PANASDALAM BANK</span><h3>Dan Bandung</h3><p>The Panasdalam Bank</p><span class="playlist-action">Putar lagu &rarr;</span></div></button>
 		</div></section>
 		<section id="karya"><div class="heading"><div><div class="label">03 / Portfolio</div><h2>Sosial <i>Media</i></h2></div><p class="muted">temukan saya di berbagai platformm</p></div><div class="projects">
-			<a class="project project-clickable" href="https://www.tiktok.com/@vyanterry" target="_blank" rel="noopener noreferrer"><div class="project-number"><img src="asset/vyan.jpg" alt="Profil TikTok Levyan Terry"></div><h3>TIKTOK</h3><p>✨ Just sharing my little world<br>📩 Business: DM<br>📸 Instagram: ryyvyan</p><div class="tech">Content &amp; Lifestyle</div><span class="project-link">Buka TikTok &rarr;</span></a>
-			<a class="project project-clickable" href="https://www.instagram.com/ryyvyan" target="_blank" rel="noopener noreferrer"><div class="project-number"><img src="asset/ig.jpg" alt="Profil Instagram Levyan Terry"></div><h3>INSTAGRAM</h3><p>✨ Just sharing my little world<br>📩 Business: DM<br>📸 TikTok: @vyanterry</p><div class="tech">Content &amp; Lifestyle</div><span class="project-link">Buka Instagram &rarr;</span></a>
+			<a class="project project-clickable" href="https://www.tiktok.com/@zonadiskon.idn" target="_blank" rel="noopener noreferrer"><div class="project-number"><img src="asset/vyan.jpg" alt="Profil TikTok Levyan Terry"></div><h3>TIKTOK</h3><p>✨ Just sharing my little world<br>📩 Business: DM<br>📸 Instagram: ryyvyan</p><div class="tech">Content &amp; Lifestyle</div><span class="project-link">Buka TikTok &rarr;</span></a>
+			<a class="project project-clickable" href="https://www.instagram.com/ryyvyan" target="_blank" rel="noopener noreferrer"><div class="project-number"><img src="asset/ig.jpg" alt="Profil Instagram Levyan Terry"></div><h3>INSTAGRAM</h3><p>✨ Just sharing my little world<br>📩 Business: DM<br>📸 TikTok: @levterr</p><div class="tech">Content &amp; Lifestyle</div><span class="project-link">Buka Instagram &rarr;</span></a>
 			<a class="project project-clickable" href="https://github.com/vyanterry" target="_blank" rel="noopener noreferrer"><div class="project-number"><img src="asset/github.jpg" alt="Profil GitHub Levyan Terry"></div><h3>GITHUB</h3><p>Tempat saya berbagi project, eksperimen, dan karya digital.</p><div class="tech">Code &amp; Projects</div><span class="project-link">Buka GitHub &rarr;</span></a>
 		</div></section>
 		<section id="tentang"><div class="two-col"><div><div class="label">04 / Tentang saya</div><h2>Lebih Dari Sekedar <i>Membuat Konten</i></h2></div><div><p class="about-text">saya percaya bahwa karya yang baik bukan hanya tentang apa yang terlihat, tetapi juga tentang cerita dan nilai yang ada di baliknyaa <br><br>melalui konten, saya senang membagikan cerita, pengalaman, dan berbagai momen dengan cara yang sederhana, autentik, dan relevann </p></div></div></section>
@@ -36,23 +36,35 @@
 	<footer><div class="footer-brand"><a class="logo" href="#home">Levyan Terry<b>.</b></a><p>Content, lifestyle, dan cerita kecil yang autentik.</p></div><div class="footer-links"><a href="https://www.instagram.com/ryyvyan" target="_blank" rel="noopener noreferrer">Instagram</a><a href="https://www.tiktok.com/@vyanterry" target="_blank" rel="noopener noreferrer">TikTok</a><a href="https://github.com/vyanterry" target="_blank" rel="noopener noreferrer">GitHub</a></div><a class="back-top" href="#home" aria-label="Kembali ke atas">&#8593;</a></footer>
 </div>
 <script>
+	// Navigation scroll effect
 	const navigation = document.querySelector('nav');
 	const updateNavigation = () => navigation.classList.toggle('scrolled', window.scrollY > 24);
 	window.addEventListener('scroll', updateNavigation, { passive: true });
 	updateNavigation();
-	const robotText = document.querySelector('#robot-text');
-	const robotGreet = document.querySelector('#robot-greet');
-	const visitorName = localStorage.getItem('portfolio-visitor-name');
-	if (visitorName) robotText.textContent = `selamat datang kembali, ${visitorName}. senang kamu mampirr`;
-	robotGreet.addEventListener('click', () => {
-		const name = window.prompt('Siapa nama kamu?');
-		if (!name || !name.trim()) return;
-		const cleanName = name.trim().slice(0, 40);
-		localStorage.setItem('portfolio-visitor-name', cleanName);
-		robotText.textContent = `Halo, ${cleanName}! Terima kasih sudah berkunjung.`;
-		robotGreet.textContent = 'Disimpan';
+
+	// Carousel functionality
+	const carousel = document.querySelector('.carousel-container');
+	const slides = document.querySelectorAll('.carousel-slide');
+	const indicators = document.querySelectorAll('.indicator');
+	let currentSlide = 0;
+
+	function showSlide(n) {
+		slides.forEach(slide => slide.classList.remove('active'));
+		indicators.forEach(ind => ind.classList.remove('active'));
+		currentSlide = (n + slides.length) % slides.length;
+		slides[currentSlide].classList.add('active');
+		indicators[currentSlide].classList.add('active');
+	}
+
+	indicators.forEach((indicator, index) => {
+		indicator.addEventListener('click', () => showSlide(index));
 	});
-	const revealItems = document.querySelectorAll('section, .robot-greeting, .project, footer');
+
+	// Auto-rotate carousel every 5 seconds
+	setInterval(() => showSlide(currentSlide + 1), 5000);
+
+	// Intersection Observer for reveal animations
+	const revealItems = document.querySelectorAll('section, .hero, .project, footer');
 	const revealObserver = new IntersectionObserver((entries, observer) => {
 		entries.forEach((entry) => {
 			if (!entry.isIntersecting) return;
@@ -61,6 +73,8 @@
 		});
 	}, { threshold: 0.12 });
 	revealItems.forEach((item) => revealObserver.observe(item));
+
+	// Music player
 	const audio = document.querySelector('#site-audio');
 	const musicPlayer = document.querySelector('.music-player');
 	const toggle = document.querySelector('.music-toggle');
@@ -68,51 +82,57 @@
 	const playlistCards = document.querySelectorAll('.playlist-card');
 	const volume = document.querySelector('.volume-control input');
 	const volumeValue = document.querySelector('#volume-value-html');
-	audio.volume = volume.value;
-	volumeValue.value = `${Math.round(volume.value * 100)}%`;
-	playlistCards.forEach((card) => card.addEventListener('click', async () => {
-		musicPlayer.hidden = false;
-		toggle.hidden = false;
-		mute.hidden = false;
-		if (audio.getAttribute('src') !== card.dataset.audio) {
-			audio.src = card.dataset.audio;
-			audio.load();
-		}
-		try { await audio.play(); } catch (error) { toggle.textContent = 'Tambah lagu'; return; }
-		toggle.textContent = 'Pause';
-		toggle.setAttribute('aria-label', 'Jeda musik');
-		toggle.setAttribute('aria-pressed', 'true');
-	}));
-	toggle.addEventListener('click', async () => {
-		if (audio.paused) {
+
+	if (audio && volume) {
+		audio.volume = volume.value;
+		volumeValue.value = `${Math.round(volume.value * 100)}%`;
+
+		playlistCards.forEach((card) => card.addEventListener('click', async () => {
+			musicPlayer.hidden = false;
+			toggle.hidden = false;
+			mute.hidden = false;
+			if (audio.getAttribute('src') !== card.dataset.audio) {
+				audio.src = card.dataset.audio;
+				audio.load();
+			}
 			try { await audio.play(); } catch (error) { toggle.textContent = 'Tambah lagu'; return; }
 			toggle.textContent = 'Pause';
 			toggle.setAttribute('aria-label', 'Jeda musik');
 			toggle.setAttribute('aria-pressed', 'true');
-		} else {
-			audio.pause();
-			toggle.textContent = 'Play';
-			toggle.setAttribute('aria-label', 'Putar musik');
-			toggle.setAttribute('aria-pressed', 'false');
-		}
-	});
-	volume.addEventListener('input', () => {
-		audio.volume = volume.value;
-		volumeValue.value = `${Math.round(volume.value * 100)}%`;
-		if (Number(volume.value) > 0 && audio.muted) {
-			audio.muted = false;
-			mute.textContent = 'Mute';
-			mute.setAttribute('aria-label', 'Matikan suara');
-			mute.setAttribute('aria-pressed', 'false');
-		}
-	});
-	mute.addEventListener('click', () => {
-		audio.muted = !audio.muted;
-		mute.textContent = audio.muted ? 'Unmute' : 'Mute';
-		mute.setAttribute('aria-label', audio.muted ? 'Nyalakan suara' : 'Matikan suara');
-		mute.setAttribute('aria-pressed', String(audio.muted));
-	});
+		}));
 
+		toggle.addEventListener('click', async () => {
+			if (audio.paused) {
+				try { await audio.play(); } catch (error) { toggle.textContent = 'Tambah lagu'; return; }
+				toggle.textContent = 'Pause';
+				toggle.setAttribute('aria-label', 'Jeda musik');
+				toggle.setAttribute('aria-pressed', 'true');
+			} else {
+				audio.pause();
+				toggle.textContent = 'Play';
+				toggle.setAttribute('aria-label', 'Putar musik');
+				toggle.setAttribute('aria-pressed', 'false');
+			}
+		});
+
+		volume.addEventListener('input', () => {
+			audio.volume = volume.value;
+			volumeValue.value = `${Math.round(volume.value * 100)}%`;
+			if (Number(volume.value) > 0 && audio.muted) {
+				audio.muted = false;
+				mute.textContent = 'Mute';
+				mute.setAttribute('aria-label', 'Matikan suara');
+				mute.setAttribute('aria-pressed', 'false');
+			}
+		});
+
+		mute.addEventListener('click', () => {
+			audio.muted = !audio.muted;
+			mute.textContent = audio.muted ? 'Unmute' : 'Mute';
+			mute.setAttribute('aria-label', audio.muted ? 'Nyalakan suara' : 'Matikan suara');
+			mute.setAttribute('aria-pressed', String(audio.muted));
+		});
+	}
 </script>
 </body>
 </html>

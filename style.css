@@ -91,6 +91,16 @@ section:before { content:''; position:absolute; top:-1px; left:0; width:70px; he
 h2 { font-size:clamp(36px, 5vw, 64px); letter-spacing:-4px; line-height:1; margin:12px 0 0; }
 .muted { color:var(--gray); line-height:1.7; max-width:300px; font-size:14px; }
 .projects { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
+.tiktok-carousel { min-width:0; }
+.tiktok-track { display:grid; grid-auto-flow:column; grid-auto-columns:100%; gap:18px; overflow-x:auto; overflow-y:hidden; padding:5px 0 20px; margin:-5px 0 0; scroll-behavior:smooth; scroll-snap-type:x mandatory; overscroll-behavior-x:contain; scrollbar-color:var(--orange) rgba(24,38,34,.12); scrollbar-width:thin; }
+.tiktok-track > .project { min-width:0; scroll-snap-align:start; }
+.tiktok-carousel-controls { display:flex; align-items:center; justify-content:flex-end; gap:10px; margin-top:5px; }
+.tiktok-carousel-controls[hidden] { display:none; }
+.tiktok-carousel-count { margin-right:auto; color:var(--gray); font-size:11px; font-weight:700; letter-spacing:1px; }
+.tiktok-carousel-button { display:grid; place-items:center; width:40px; height:40px; border:1px solid var(--dark); color:var(--dark); background:transparent; font:700 18px 'DM Sans',sans-serif; cursor:pointer; transition:color .2s,background .2s,transform .2s; }
+.tiktok-carousel-button:hover:not(:disabled) { color:var(--cream); background:var(--dark); transform:translateY(-2px); }
+.tiktok-carousel-button:disabled { opacity:.38; cursor:not-allowed; }
+.tiktok-carousel-button:focus-visible { outline:2px solid var(--orange); outline-offset:3px; }
 .playlist-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
 .playlist-card { display:grid; grid-template-columns:112px 1fr; gap:18px; align-items:center; width:100%; padding:14px; border:0; border-right:4px solid var(--orange); color:var(--cream); background:var(--dark); text-align:left; font:inherit; cursor:pointer; box-shadow:6px 6px 0 rgba(183,154,103,.35); transition:transform .25s,box-shadow .25s; }
 .playlist-card:hover { transform:translateY(-6px); box-shadow:8px 11px 0 rgba(183,154,103,.45); }

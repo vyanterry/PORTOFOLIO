@@ -25,9 +25,10 @@
 			<button class="playlist-card" type="button" data-audio="asset/perunggu lagu.mp3"><div class="playlist-cover"><img src="asset/perunggu.jpeg" alt="Cover playlist Ini Abadi oleh Perunggu"><span>02</span></div><div class="playlist-info"><span class="playlist-type">PERUNGGU</span><h3>Ini Abadi</h3><p>Perunggu</p><span class="playlist-action">Putar lagu &rarr;</span></div></button>
 			<button class="playlist-card" type="button" data-audio="asset/lagu.mp3"><div class="playlist-cover"><img src="asset/dan bandung.jpg" alt="Cover playlist Dan Bandung oleh The Panasdalam Bank"><span>03</span></div><div class="playlist-info"><span class="playlist-type">THE PANASDALAM BANK</span><h3>Dan Bandung</h3><p>The Panasdalam Bank</p><span class="playlist-action">Putar lagu &rarr;</span></div></button>
 		</div></section>
-		<section id="karya"><div class="heading"><div><div class="label">03 / Portfolio</div><h2>Sosial <i>Media</i></h2></div><p class="muted">temukan saya di berbagai platformm</p></div><div class="projects">
+		<section id="karya"><div class="heading"><div><div class="label">03 / Portfolio</div><h2>Sosial <i>Media</i></h2></div><p class="muted">temukan saya di berbagai platformm</p></div><div class="projects"><div class="tiktok-carousel"><div class="tiktok-track" id="tiktok-track" role="region" aria-roledescription="carousel" aria-label="Kartu akun TikTok" tabindex="0">
 			<a class="project project-clickable" href="https://www.tiktok.com/@zonadiskon.idn" target="_blank" rel="noopener noreferrer"><div class="project-number"><img src="asset/levterr.jpg" alt="Profil TikTok Levyan Terry"></div><h3>TIKTOK</h3><p>✨ Just sharing my little world<br>📩 Business: DM<br>📸 Instagram: ryyvyan</p><div class="tech">Content &amp; Lifestyle</div><span class="project-link">Buka TikTok &rarr;</span></a>
 			<a class="project project-clickable" href="https://www.tiktok.com/@allaboutslank" target="_blank" rel="noopener noreferrer"><div class="project-number"><img src="asset/allaboutslank.jpg" alt="Profil TikTok All About Slank"></div><h3>TIKTOK</h3><p>All About Slank<br>Konten seputar Slank dan musik.</p><div class="tech">All About Slank</div><span class="project-link">Buka TikTok &rarr;</span></a>
+		</div><div class="tiktok-carousel-controls" aria-label="Navigasi akun TikTok"><span class="tiktok-carousel-count" aria-live="polite"></span><button class="tiktok-carousel-button" type="button" data-tiktok-direction="-1" aria-label="Akun TikTok sebelumnya">&larr;</button><button class="tiktok-carousel-button" type="button" data-tiktok-direction="1" aria-label="Akun TikTok berikutnya">&rarr;</button></div></div>
 			<a class="project project-clickable" href="https://www.instagram.com/ryyvyan" target="_blank" rel="noopener noreferrer"><div class="project-number"><img src="asset/ig.jpg" alt="Profil Instagram Levyan Terry"></div><h3>INSTAGRAM</h3><p>✨ Just sharing my little world<br>📩 Business: DM<br>📸 TikTok: @levterr</p><div class="tech">Content &amp; Lifestyle</div><span class="project-link">Buka Instagram &rarr;</span></a>
 			<a class="project project-clickable" href="https://github.com/vyanterry" target="_blank" rel="noopener noreferrer"><div class="project-number"><img src="asset/github.jpg" alt="Profil GitHub Levyan Terry"></div><h3>GITHUB</h3><p>Tempat saya berbagi project, eksperimen, dan karya digital.</p><div class="tech">Code &amp; Projects</div><span class="project-link">Buka GitHub &rarr;</span></a>
 		</div></section>
@@ -43,26 +44,39 @@
 	window.addEventListener('scroll', updateNavigation, { passive: true });
 	updateNavigation();
 
-	// Carousel functionality
-	const carousel = document.querySelector('.carousel-container');
-	const slides = document.querySelectorAll('.carousel-slide');
-	const indicators = document.querySelectorAll('.indicator');
-	let currentSlide = 0;
-
-	function showSlide(n) {
-		slides.forEach(slide => slide.classList.remove('active'));
-		indicators.forEach(ind => ind.classList.remove('active'));
-		currentSlide = (n + slides.length) % slides.length;
-		slides[currentSlide].classList.add('active');
-		indicators[currentSlide].classList.add('active');
+	// TikTok-only card carousel
+	const tiktokTrack = document.querySelector('#tiktok-track');
+	const tiktokCards = tiktokTrack ? Array.from(tiktokTrack.querySelectorAll('.project')) : [];
+	const tiktokCarouselControls = document.querySelector('.tiktok-carousel-controls');
+	const tiktokCarouselCount = document.querySelector('.tiktok-carousel-count');
+	const tiktokCarouselButtons = document.querySelectorAll('.tiktok-carousel-button');
+	if (tiktokTrack && tiktokCards.length && tiktokCarouselControls) {
+		const cardGap = () => parseFloat(getComputedStyle(tiktokTrack).columnGap) || 0;
+		const cardStep = () => tiktokCards[0].getBoundingClientRect().width + cardGap();
+		const updateTiktokCarousel = () => {
+			const trackLeft = tiktokTrack.getBoundingClientRect().left;
+			let activeIndex = 0;
+			let closestDistance = Infinity;
+			tiktokCards.forEach((card, index) => {
+				const distance = Math.abs(card.getBoundingClientRect().left - trackLeft);
+				if (distance < closestDistance) {
+					closestDistance = distance;
+					activeIndex = index;
+				}
+			});
+			const visibleCards = Math.max(1, Math.round((tiktokTrack.clientWidth + cardGap()) / cardStep()));
+			tiktokCarouselControls.hidden = tiktokCards.length <= visibleCards;
+			tiktokCarouselCount.textContent = `${activeIndex + 1} / ${tiktokCards.length}`;
+			tiktokCarouselButtons[0].disabled = tiktokTrack.scrollLeft <= 1;
+			tiktokCarouselButtons[1].disabled = tiktokTrack.scrollLeft + tiktokTrack.clientWidth >= tiktokTrack.scrollWidth - 1;
+		};
+		tiktokCarouselButtons.forEach((button) => button.addEventListener('click', () => {
+			tiktokTrack.scrollBy({ left: Number(button.dataset.tiktokDirection) * cardStep(), behavior: 'smooth' });
+		}));
+		tiktokTrack.addEventListener('scroll', () => requestAnimationFrame(updateTiktokCarousel), { passive: true });
+		window.addEventListener('resize', updateTiktokCarousel);
+		updateTiktokCarousel();
 	}
-
-	indicators.forEach((indicator, index) => {
-		indicator.addEventListener('click', () => showSlide(index));
-	});
-
-	// Auto-rotate carousel every 5 seconds
-	setInterval(() => showSlide(currentSlide + 1), 5000);
 
 	// Intersection Observer for reveal animations
 	const revealItems = document.querySelectorAll('section, .hero, .project, footer');

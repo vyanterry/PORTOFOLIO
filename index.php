@@ -2,7 +2,7 @@
 require_once __DIR__ . '/koneksi.php';
 
 $projects = [];
-$result = $koneksi->query('SELECT p.* FROM projects p INNER JOIN (SELECT title, MAX(id) AS id FROM projects GROUP BY title) latest ON latest.id = p.id ORDER BY p.created_at DESC');
+$result = $koneksi->query("SELECT p.* FROM projects p INNER JOIN (SELECT title, MAX(id) AS id FROM projects GROUP BY title) latest ON latest.id = p.id WHERE p.title <> 'TIKTOK' ORDER BY p.created_at DESC");
 if ($result) {
 	while ($row = $result->fetch_assoc()) {
 		$projects[] = $row;
@@ -56,7 +56,10 @@ function aman($text) {
 			<button class="playlist-card" type="button" data-audio="asset/perunggu lagu.mp3"><div class="playlist-cover"><img src="asset/perunggu.jpeg" alt="Cover playlist Ini Abadi oleh Perunggu"><span>02</span></div><div class="playlist-info"><span class="playlist-type">PERUNGGU</span><h3>Ini Abadi</h3><p>Perunggu</p><span class="playlist-action">Putar lagu &rarr;</span></div></button>
 			<button class="playlist-card" type="button" data-audio="asset/lagu.mp3"><div class="playlist-cover"><img src="asset/dan bandung.jpg" alt="Cover playlist Dan Bandung oleh The Panasdalam Bank"><span>03</span></div><div class="playlist-info"><span class="playlist-type">THE PANASDALAM BANK</span><h3>Dan Bandung</h3><p>The Panasdalam Bank</p><span class="playlist-action">Putar lagu &rarr;</span></div></button>
 		</div></section>
-		<section id="karya"><div class="heading"><div><div class="label">01 / Portfolio</div><h2>Sosial <i>Media</i></h2></div><p class="muted"></p></div><div class="projects">
+		<section id="karya"><div class="heading"><div><div class="label">01 / Portfolio</div><h2>Sosial <i>Media</i></h2></div><p class="muted"></p></div><div class="projects"><div class="tiktok-carousel"><div class="tiktok-track" id="tiktok-track" role="region" aria-roledescription="carousel" aria-label="Kartu akun TikTok" tabindex="0">
+			<a class="project project-clickable" href="https://www.tiktok.com/@zonadiskon.idn" target="_blank" rel="noopener noreferrer"><div class="project-number"><img src="asset/levterr.jpg" alt="Profil TikTok Levyan Terry"></div><h3>TIKTOK</h3><p>✨ Just sharing my little world<br>📩 Business: DM<br>📸 Instagram: ryyvyan</p><div class="tech">Content &amp; Lifestyle</div><span class="project-link">Buka TikTok &rarr;</span></a>
+			<a class="project project-clickable" href="https://www.tiktok.com/@allaboutslank" target="_blank" rel="noopener noreferrer"><div class="project-number"><img src="asset/allaboutslank.jpg" alt="Profil TikTok All About Slank"></div><h3>TIKTOK</h3><p>All About Slank<br>Konten seputar Slank dan musik.</p><div class="tech">All About Slank</div><span class="project-link">Buka TikTok &rarr;</span></a>
+		</div><div class="tiktok-carousel-controls" aria-label="Navigasi akun TikTok"><span class="tiktok-carousel-count" aria-live="polite"></span><button class="tiktok-carousel-button" type="button" data-tiktok-direction="-1" aria-label="Akun TikTok sebelumnya">&larr;</button><button class="tiktok-carousel-button" type="button" data-tiktok-direction="1" aria-label="Akun TikTok berikutnya">&rarr;</button></div></div>
 			<?php foreach ($projects as $number => $project): ?><?php $judul = $project['title'] === 'INTSAGRAM' ? 'INSTAGRAM' : $project['title']; $gambar = $project['title'] === 'TIKTOK' ? 'asset/levterr.jpg' : (!empty($project['image_url']) ? $project['image_url'] : ($project['title'] === 'INTSAGRAM' ? 'asset/ig.jpg' : ($project['title'] === 'GITHUB' ? 'asset/github.jpg' : ''))); $deskripsi = $project['title'] === 'TIKTOK' ? "✨ Just sharing my little world\n📩 Business: DM\n📸 Instagram: ryyvyan" : $project['description']; $link = $project['title'] === 'TIKTOK' ? 'https://www.tiktok.com/@zonadiskon.idn' : ($project['title'] === 'INTSAGRAM' ? 'https://www.instagram.com/ryyvyan' : ($project['title'] === 'GITHUB' ? 'https://github.com/vyanterry' : $project['project_url'])); $labelLink = $project['title'] === 'INTSAGRAM' ? 'Buka Instagram' : ($project['title'] === 'GITHUB' ? 'Buka GitHub' : 'Buka TikTok'); ?><article class="project"><div class="project-number"><?php if ($gambar): ?><img src="<?= aman($gambar) ?>" alt="Gambar <?= aman($judul) ?>"><?php else: ?>0<?= $number + 1 ?><?php endif; ?></div><h3><?= aman($judul) ?></h3><p><?= nl2br(aman($deskripsi)) ?></p><div class="tech"><?= aman($project['tech_stack']) ?></div><?php if ($link !== '#'): ?><a class="project-link" href="<?= aman($link) ?>" target="_blank" rel="noopener noreferrer"><?= $labelLink ?> &rarr;</a><?php endif; ?></article><?php if ($project['title'] === 'TIKTOK'): ?><article class="project"><div class="project-number"><img src="asset/allaboutslank.jpg" alt="Profil TikTok All About Slank"></div><h3>TIKTOK</h3><p>All About Slank<br>Konten seputar Slank dan musik.</p><div class="tech">All About Slank</div><a class="project-link" href="https://www.tiktok.com/@allaboutslank" target="_blank" rel="noopener noreferrer">Buka TikTok &rarr;</a></article><?php endif; ?>
 <?php endforeach; ?>
 		</div></section>
@@ -74,6 +77,38 @@ Saya terus belajar, bereksplorasi, dan berkembang untuk menciptakan karya yang m
 	const updateNavigation = () => navigation.classList.toggle('scrolled', window.scrollY > 24);
 	window.addEventListener('scroll', updateNavigation, { passive: true });
 	updateNavigation();
+	const tiktokTrack = document.querySelector('#tiktok-track');
+	const tiktokCards = tiktokTrack ? Array.from(tiktokTrack.querySelectorAll('.project')) : [];
+	const tiktokCarouselControls = document.querySelector('.tiktok-carousel-controls');
+	const tiktokCarouselCount = document.querySelector('.tiktok-carousel-count');
+	const tiktokCarouselButtons = document.querySelectorAll('.tiktok-carousel-button');
+	if (tiktokTrack && tiktokCards.length && tiktokCarouselControls) {
+		const cardGap = () => parseFloat(getComputedStyle(tiktokTrack).columnGap) || 0;
+		const cardStep = () => tiktokCards[0].getBoundingClientRect().width + cardGap();
+		const updateTiktokCarousel = () => {
+			const trackLeft = tiktokTrack.getBoundingClientRect().left;
+			let activeIndex = 0;
+			let closestDistance = Infinity;
+			tiktokCards.forEach((card, index) => {
+				const distance = Math.abs(card.getBoundingClientRect().left - trackLeft);
+				if (distance < closestDistance) {
+					closestDistance = distance;
+					activeIndex = index;
+				}
+			});
+			const visibleCards = Math.max(1, Math.round((tiktokTrack.clientWidth + cardGap()) / cardStep()));
+			tiktokCarouselControls.hidden = tiktokCards.length <= visibleCards;
+			tiktokCarouselCount.textContent = `${activeIndex + 1} / ${tiktokCards.length}`;
+			tiktokCarouselButtons[0].disabled = tiktokTrack.scrollLeft <= 1;
+			tiktokCarouselButtons[1].disabled = tiktokTrack.scrollLeft + tiktokTrack.clientWidth >= tiktokTrack.scrollWidth - 1;
+		};
+		tiktokCarouselButtons.forEach((button) => button.addEventListener('click', () => {
+			tiktokTrack.scrollBy({ left: Number(button.dataset.tiktokDirection) * cardStep(), behavior: 'smooth' });
+		}));
+		tiktokTrack.addEventListener('scroll', () => requestAnimationFrame(updateTiktokCarousel), { passive: true });
+		window.addEventListener('resize', updateTiktokCarousel);
+		updateTiktokCarousel();
+	}
 	const robotText = document.querySelector('#robot-text');
 	const robotGreet = document.querySelector('#robot-greet');
 	const visitorName = localStorage.getItem('portfolio-visitor-name');

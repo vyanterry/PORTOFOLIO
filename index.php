@@ -50,7 +50,13 @@ function aman($text) {
 	</aside>
 	<main id="home">
 		<div class="hero"><div><div class="label">Web Developer / Surabaya</div><h1>Levyan <i>Terry</i></h1><p class="lead">Content creator yang berbagi cerita, lifestyle, dan berbagai momen menarik dengan cara yang autentik.</p><div class="buttons"><a class="button main" href="#karya">Lihat Sosial Media &darr;</a><a class="button" href="#kontak">Mari ngobrol &rarr;</a></div></div><div class="visual"><img src="asset/terry.jpg" alt="Foto Terry"><strong>✳</strong></div></div>
-		<div class="robot-greeting"><div class="robot-scene"><div class="robot-antenna"></div><div class="robot"><div class="robot-face"><span></span><span></span><i></i></div><div class="robot-body"><b></b><b></b></div></div></div><div class="robot-message"><span class="label">WELCOME / 01</span><h2>Halo, <i>teman.</i></h2><p id="robot-text">Selamat datang di ruang kecil Levyan. Senang kamu mampir.</p><button class="button main" id="robot-greet" type="button">Sapa robot</button></div></div>
+		<section id="perjalanan" class="tiktok-journey"><div class="heading"><div><div class="label">CERITA / LEVTERR</div><h2>Perjalanan di <i>TikTok</i></h2></div><p class="muted">Sebuah perjalanan kecil yang penuh cerita—dari awal berkarya, melewati masa sulit, hingga menemukan semangat untuk kembali.</p></div><div class="journey-carousel"><div class="journey-track" id="journey-track" role="region" aria-roledescription="carousel" aria-label="Cerita perjalanan TikTok Levterr" tabindex="0">
+			<article class="journey-slide"><div class="journey-image"><img src="asset/levterr1.jpg" alt="Profil TikTok levterr" loading="lazy"></div><div class="journey-copy"><span class="journey-number">01 / AWAL PERJALANAN</span><h3>Sebuah cerita dimulai</h3><p>Berawal dari akun levterr dan konten gaming yang kuunggah dengan sepenuh hati. Dari sana, satu per satu cerita kecil mulai terkumpul.</p><span class="journey-divider"></span></div></article>
+			<article class="journey-slide"><div class="journey-image"><img src="asset/levterr2.jpg" alt="Momen levterr meraih MVP di game" loading="lazy"></div><div class="journey-copy"><span class="journey-number">02 / MOMEN BERHARGA</span><h3>Setiap usaha punya cerita</h3><p>Di antara banyak video, ada momen spesial seperti meraih MVP ke-288—kenangan sederhana yang membuat perjalanan ini terasa berarti.</p><span class="journey-divider"></span></div></article>
+			<article class="journey-slide"><div class="journey-image"><img src="asset/levterr3.jpg" alt="Dukungan teman untuk akun TikTok levterr" loading="lazy"></div><div class="journey-copy"><span class="journey-number">03 / TETAP BERTAHAN</span><h3>Tidak harus sendiri</h3><p>Saat akun menghadapi masalah, dukungan teman-teman yang ikut membantu mengingatkanku bahwa selalu ada orang baik di sepanjang jalan.</p><span class="journey-divider"></span></div></article>
+			<article class="journey-slide"><div class="journey-image"><img src="asset/levterr4.jpg" alt="Komentar yang menyemangati levterr untuk kembali" loading="lazy"></div><div class="journey-copy"><span class="journey-number">04 / MULAI KEMBALI</span><h3>Jeda bukanlah akhir</h3><p>Setelah cukup lama vakum, muncul lagi keinginan untuk meramaikan akun dan berbagi cerita baru dengan kalian.</p><span class="journey-divider"></span></div></article>
+			<article class="journey-slide"><div class="journey-image"><img src="asset/levterr5.jpg" alt="Dukungan pengikut yang menantikan konten levterr" loading="lazy"></div><div class="journey-copy"><span class="journey-number">05 / TERIMA KASIH</span><h3>Semangat dari kalian</h3><p>Komentar teman-teman yang bilang kangen dan menantikan konten baru menjadi alasan manis untuk terus berkarya. Perjalanan ini masih berlanjut.</p><span class="journey-divider"></span></div></article>
+		</div><div class="journey-controls" aria-label="Navigasi cerita TikTok"><span class="journey-count" aria-live="polite"></span><div class="journey-dots" role="group" aria-label="Pilih cerita"></div><button class="journey-button" type="button" data-journey-direction="-1" aria-label="Cerita sebelumnya">&larr;</button><button class="journey-button" type="button" data-journey-direction="1" aria-label="Cerita berikutnya">&rarr;</button></div></div></section>
 		<section id="playlist"><div class="heading"><div><div class="label">02 / Playlist</div><h2>Lagu <i>Favorit</i></h2></div><p class="muted">Tiga lagu yang sedang menemani cerita kecil saya.</p></div><div class="playlist-grid">
 			<button class="playlist-card" type="button" data-audio="asset/wonderwall.mp3"><div class="playlist-cover"><img src="asset/wonderwall.jpg" alt="Cover playlist Wonderwall oleh Oasis"><span>01</span></div><div class="playlist-info"><span class="playlist-type">OASIS</span><h3>Wonderwall</h3><p>Oasis</p><span class="playlist-action">Putar lagu &rarr;</span></div></button>
 			<button class="playlist-card" type="button" data-audio="asset/perunggu lagu.mp3"><div class="playlist-cover"><img src="asset/perunggu.jpeg" alt="Cover playlist Ini Abadi oleh Perunggu"><span>02</span></div><div class="playlist-info"><span class="playlist-type">PERUNGGU</span><h3>Ini Abadi</h3><p>Perunggu</p><span class="playlist-action">Putar lagu &rarr;</span></div></button>
@@ -77,6 +83,46 @@ Saya terus belajar, bereksplorasi, dan berkembang untuk menciptakan karya yang m
 	const updateNavigation = () => navigation.classList.toggle('scrolled', window.scrollY > 24);
 	window.addEventListener('scroll', updateNavigation, { passive: true });
 	updateNavigation();
+	const journeyTrack = document.querySelector('#journey-track');
+	const journeySlides = journeyTrack ? Array.from(journeyTrack.querySelectorAll('.journey-slide')) : [];
+	const journeyCount = document.querySelector('.journey-count');
+	const journeyDots = document.querySelector('.journey-dots');
+	const journeyButtons = document.querySelectorAll('.journey-button');
+	if (journeyTrack && journeySlides.length && journeyDots) {
+		const dots = journeySlides.map((slide, index) => {
+			const dot = document.createElement('button');
+			dot.className = 'journey-dot';
+			dot.type = 'button';
+			dot.setAttribute('aria-label', `Tampilkan cerita ${index + 1}`);
+			dot.addEventListener('click', () => slide.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' }));
+			journeyDots.append(dot);
+			return dot;
+		});
+		const updateJourney = () => {
+			const trackLeft = journeyTrack.getBoundingClientRect().left;
+			let activeIndex = 0;
+			let closestDistance = Infinity;
+			journeySlides.forEach((slide, index) => {
+				const distance = Math.abs(slide.getBoundingClientRect().left - trackLeft);
+				if (distance < closestDistance) {
+					closestDistance = distance;
+					activeIndex = index;
+				}
+			});
+			journeyCount.textContent = `${String(activeIndex + 1).padStart(2, '0')} / ${String(journeySlides.length).padStart(2, '0')}`;
+			dots.forEach((dot, index) => dot.setAttribute('aria-current', String(index === activeIndex)));
+			journeyButtons[0].disabled = journeyTrack.scrollLeft <= 1;
+			journeyButtons[1].disabled = journeyTrack.scrollLeft + journeyTrack.clientWidth >= journeyTrack.scrollWidth - 1;
+		};
+		journeyButtons.forEach((button) => button.addEventListener('click', () => {
+			const currentIndex = Math.min(journeySlides.length - 1, Math.max(0, Math.round(journeyTrack.scrollLeft / journeyTrack.clientWidth)));
+			const nextIndex = Math.min(journeySlides.length - 1, Math.max(0, currentIndex + Number(button.dataset.journeyDirection)));
+			journeyTrack.scrollTo({ left: nextIndex * journeyTrack.clientWidth, behavior: 'smooth' });
+		}));
+		journeyTrack.addEventListener('scroll', () => requestAnimationFrame(updateJourney), { passive: true });
+		window.addEventListener('resize', updateJourney);
+		updateJourney();
+	}
 	const tiktokTrack = document.querySelector('#tiktok-track');
 	const tiktokCards = tiktokTrack ? Array.from(tiktokTrack.querySelectorAll('.project')) : [];
 	const tiktokCarouselControls = document.querySelector('.tiktok-carousel-controls');
@@ -109,19 +155,7 @@ Saya terus belajar, bereksplorasi, dan berkembang untuk menciptakan karya yang m
 		window.addEventListener('resize', updateTiktokCarousel);
 		updateTiktokCarousel();
 	}
-	const robotText = document.querySelector('#robot-text');
-	const robotGreet = document.querySelector('#robot-greet');
-	const visitorName = localStorage.getItem('portfolio-visitor-name');
-	if (visitorName) robotText.textContent = `Selamat datang kembali, ${visitorName}. Senang kamu mampir.`;
-	robotGreet.addEventListener('click', () => {
-		const name = window.prompt('Siapa nama kamu?');
-		if (!name || !name.trim()) return;
-		const cleanName = name.trim().slice(0, 40);
-		localStorage.setItem('portfolio-visitor-name', cleanName);
-		robotText.textContent = `Halo, ${cleanName}! Terima kasih sudah berkunjung.`;
-		robotGreet.textContent = 'Disimpan';
-	});
-	const revealItems = document.querySelectorAll('section, .robot-greeting, .project, footer');
+	const revealItems = document.querySelectorAll('section, .project, footer');
 	const revealObserver = new IntersectionObserver((entries, observer) => {
 		entries.forEach((entry) => {
 			if (!entry.isIntersecting) return;
